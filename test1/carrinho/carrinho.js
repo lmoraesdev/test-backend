@@ -2,7 +2,7 @@ class Carrinho {
   constructor() {
     this.itens = [];
     this.subtotal = null;
-    this.frente = null;
+    this.frete = null;
     this.total = null;
   }
 
@@ -10,24 +10,28 @@ class Carrinho {
     this.itens.push(item);
   }
 
-  adicionaFrente(valor) {
-    this.frente = valor;
+  adicionaFrete(valor) {
+    this.frete = valor;
   }
 
   calculaTotal() {
-    this.subtotal = this.itens.reduce((acum, item) => acum + item.pagaValorTotalItem(), 0);
-    return this.subtotal + this.frente;
+    this.subtotal = this.itens.reduce(
+      (acum, item) => acum + item.pegaValorTotalItem(),
+      0,
+    );
+    return this.subtotal + this.frete;
   }
 
   finalizaCompra() {
     if (this.itens.length === 0) {
-      throw new Error('Carrinho de compras vazia');
+      throw new Error('Carrinho de compras vazio');
     }
+
     this.total = this.calculaTotal();
 
     return {
       subtotal: this.subtotal,
-      frente: this.frente,
+      frete: this.frete,
       total: this.total,
     };
   }

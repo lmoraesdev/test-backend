@@ -24,11 +24,17 @@ class AutoresController {
     const { body } = req;
     const autor = new Autor(body);
     try {
+      if (Object.keys(body).length === 0) {
+        throw new Error('corpo da requisicao vazio');
+      }
       const resposta = await autor.salvar(autor);
       return res
         .status(201)
         .json({ message: 'autor criado', content: resposta });
     } catch (err) {
+      if (err.message === 'corpo da requisicao vazio') {
+        return res.status(400).json(err.message);
+      }
       return res.status(500).json(err.message);
     }
   };
@@ -41,7 +47,7 @@ class AutoresController {
       const novoAutor = new Autor({ ...autorAtual, ...body });
       const resposta = await novoAutor.salvar(novoAutor);
       return res
-        .status(200)
+        .status(204)
         .json({ message: 'autor atualizado', content: resposta });
     } catch (err) {
       return res.status(500).json(err.message);
